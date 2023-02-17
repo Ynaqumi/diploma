@@ -11,8 +11,10 @@ import (
 	"strings"
 )
 
+const EmailCsv = "diploma/pkg/data/email.csv"
+
 func GetEmail(emailChan chan map[string][][]structs.EmailData) {
-	emailData, err := os.Open("C:/Users/touca/VSCode/diploma/src/simulator/email.data")
+	emailData, err := os.Open(EmailCsv)
 	if err != nil {
 		log.Println("Не удалось открыть файл", err)
 		emailChan <- nil

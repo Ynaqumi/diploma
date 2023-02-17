@@ -11,8 +11,10 @@ import (
 	"strings"
 )
 
+const SmsCsv = "diploma/pkg/data/sms.csv"
+
 func GetSms(smsChan chan [][]structs.SMSData) {
-	DataFile, err := os.Open("C:/Users/touca/VSCode/diploma/src/simulator/sms.data")
+	DataFile, err := os.Open(SmsCsv)
 	if err != nil {
 		log.Println("Не удалось открыть файл", err)
 		smsChan <- nil
@@ -40,20 +42,14 @@ func GetSms(smsChan chan [][]structs.SMSData) {
 	}
 	var sortedSms [][]structs.SMSData
 
-	smsSortedProvider := sortProvider(unsortedSms)
+	smsSortedProvider := sortProviderSms(unsortedSms)
 	sortedSms = append(sortedSms, smsSortedProvider)
-	smsSortedCountry := sortCountry(unsortedSms)
+	smsSortedCountry := sortCountrySms(unsortedSms)
 	sortedSms = append(sortedSms, smsSortedCountry)
 	smsChan <- sortedSms
-
-	FileCSV, err := os.Create("C:/Users/touca/VSCode/diploma/pkg/data/sms.csv")
-	if err != nil {
-		log.Println("Не удалось создать файл", err)
-	}
-	defer FileCSV.Close()
 }
 
-func sortProvider(unsortedSms []structs.SMSData) []structs.SMSData {
+func sortProviderSms(unsortedSms []structs.SMSData) []structs.SMSData {
 	smsSortedProvider := make([]structs.SMSData, len(unsortedSms))
 	copy(smsSortedProvider, unsortedSms)
 	sort.Slice(smsSortedProvider, func(i, j int) bool {
@@ -62,7 +58,7 @@ func sortProvider(unsortedSms []structs.SMSData) []structs.SMSData {
 	return smsSortedProvider
 }
 
-func sortCountry(unsortedSms []structs.SMSData) []structs.SMSData {
+func sortCountrySms(unsortedSms []structs.SMSData) []structs.SMSData {
 	smsSortedCountry := make([]structs.SMSData, len(unsortedSms))
 	copy(smsSortedCountry, unsortedSms)
 	sort.Slice(smsSortedCountry, func(i, j int) bool {

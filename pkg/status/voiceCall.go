@@ -10,8 +10,10 @@ import (
 	"strings"
 )
 
+const VoiceCallCsv = "diploma/pkg/data/voicecall.csv"
+
 func GetVoice(voiceCallChan chan []structs.VoiceCallData) {
-	voiceData, err := os.Open("C:/Users/touca/VSCode/diploma/src/simulator/voice.data")
+	voiceData, err := os.Open(VoiceCallCsv)
 	if err != nil {
 		log.Println("Не удалось открыть файл", err)
 		voiceCallChan <- nil

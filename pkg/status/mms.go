@@ -48,15 +48,15 @@ func GetMms(mmsChan chan [][]structs.MMSData) {
 		}
 	}
 	sortedMmsCollection := [][]structs.MMSData{}
-	mmsSortedProvider := sortProvider(unsortedMms)
+	mmsSortedProvider := sortProviderMms(unsortedMms)
 	sortedMmsCollection = append(sortedMmsCollection, mmsSortedProvider)
-	mmsSortedCountry := sortCountry(unsortedMms)
+	mmsSortedCountry := sortCountryMms(unsortedMms)
 	sortedMmsCollection = append(sortedMmsCollection, mmsSortedCountry)
 
 	mmsChan <- sortedMmsCollection
 }
 
-func sortProvider(unsortedMms []structs.MMSData) []structs.MMSData {
+func sortProviderMms(unsortedMms []structs.MMSData) []structs.MMSData {
 	mmsSortedProvider := make([]structs.MMSData, len(unsortedMms))
 	copy(mmsSortedProvider, unsortedMms)
 	sort.Slice(mmsSortedProvider, func(i, j int) bool {
@@ -65,7 +65,7 @@ func sortProvider(unsortedMms []structs.MMSData) []structs.MMSData {
 	return mmsSortedProvider
 }
 
-func sortCountry(unsortedMms []structs.MMSData) []structs.MMSData {
+func sortCountryMms(unsortedMms []structs.MMSData) []structs.MMSData {
 	mmsSortedCountry := make([]structs.MMSData, len(unsortedMms))
 	copy(mmsSortedCountry, unsortedMms)
 	sort.Slice(mmsSortedCountry, func(i, j int) bool {
