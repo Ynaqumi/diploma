@@ -1,52 +1,57 @@
-package status
+package sms
 
 import (
 	"bufio"
+	"fmt"
 	"log"
-	"main/pkg/check"
-	"main/pkg/structs"
+	"main/config"
+	"main/status/check"
+	"main/structs"
 	"os"
 	"sort"
 	"strconv"
 	"strings"
 )
 
-const SmsCsv = "diploma/pkg/data/sms.csv"
-
 func GetSms(smsChan chan [][]structs.SMSData) {
-	DataFile, err := os.Open(SmsCsv)
+	SmsDataFile, err := os.Open(config.SmsDataFile)
 	if err != nil {
-		log.Println("Не удалось открыть файл", err)
+		log.Println("Не удалось открыть файл Data", err)
 		smsChan <- nil
 		return
 	}
-	defer DataFile.Close()
+	defer SmsDataFile.Close()
+
+	SmsCsvFile, err := os.Create(config.SmsCsvFile)
+	if err != nil {
+		log.Println("Не удалось создать файл Csv", err)
+	}
+	defer SmsCsvFile.Close()
 
 	var unsortedSms []structs.SMSData
 
-	scanner := bufio.NewScanner(DataFile)
+	scanner := bufio.NewScanner(SmsDataFile)
 	for scanner.Scan() {
 		line := scanner.Text()
 		lineSlice := strings.Split(line, ";")
 		bandwidth, _ := strconv.Atoi(lineSlice[1])
 
-		if len(lineSlice) == 4 &&
-			lineSlice[2] != "" &&
-			check.Country(lineSlice[0]) &&
-			check.Provider(lineSlice[3]) &&
-			(bandwidth >= 0 && bandwidth <= 100) {
-
-			correctLine := structs.SMSData{lineSlice[0], lineSlice[1], lineSlice[2], lineSlice[3]}
+		if len(lineSlice) == 4 && lineSlice[2] != "" && check.CountrySmsAndMms(lineSlice[0]) && check.ProviderSmsAndMms(lineSlice[3]) && (bandwidth >= 0 && bandwidth <= 100) {
+			SmsCsvFile.WriteString(lineSlice[0] + ";" + lineSlice[1] + ";" + lineSlice[2] + ";" + lineSlice[3] + "\n")
+			if err != nil {
+				fmt.Println(err.Error())
+			}
+			correctLine := structs.SMSData{Country: lineSlice[0], Bandwidth: lineSlice[1], ResponseTime: lineSlice[1], Provider: lineSlice[3]}
 			unsortedSms = append(unsortedSms, correctLine)
 		}
 	}
 	var sortedSms [][]structs.SMSData
 
-	smsSortedProvider := sortProviderSms(unsortedSms)
+	smsSortedProvider, smsSortedCountry := sortProviderSms(unsortedSms), sortCountrySms(unsortedSms)
 	sortedSms = append(sortedSms, smsSortedProvider)
-	smsSortedCountry := sortCountrySms(unsortedSms)
 	sortedSms = append(sortedSms, smsSortedCountry)
 	smsChan <- sortedSms
+
 }
 
 func sortProviderSms(unsortedSms []structs.SMSData) []structs.SMSData {

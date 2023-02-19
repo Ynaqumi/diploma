@@ -1,9 +1,9 @@
 package main
 
 import (
-	"main/pkg/server"
+	"main/service"
 )
 
 func main() {
-	server.Start()
+	service.Start()
 }

@@ -1,4 +1,4 @@
-package checkList
+package check
 
 var ProvidersListSMSAndMMS = [3]string{"Topolo", "Rond", "Kildy"}
 var ProvidersListEmail = [13]string{"Gmail", "Yahoo", "Hotmail", "MSN", "Orange", "Comcast", "AOL", "Live", "RediffMail", "GMX", "Protonmail",
@@ -253,4 +253,31 @@ var Countries = map[string]string{
 	"YE": "Yemen",
 	"ZM": "Zambia",
 	"ZW": "Zimbabwe",
+}
+
+func CountrySmsAndMms(str string) bool {
+	for i := 0; i < len(Countries); i++ {
+		if str == Countries[string(i)] {
+			return true
+		}
+	}
+	return false
+}
+
+func ProviderSmsAndMms(str string) bool {
+	for i := 0; i < len(ProvidersListSMSAndMMS); i++ {
+		if str == ProvidersListSMSAndMMS[i] {
+			return true
+		}
+	}
+	return false
+}
+
+func ProviderEmail(str string) bool {
+	for i := 0; i < len(ProvidersListEmail); i++ {
+		if str == ProvidersListEmail[i] {
+			return true
+		}
+	}
+	return false
 }

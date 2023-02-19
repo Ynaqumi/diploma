@@ -1,12 +1,12 @@
-package status
+package mms
 
 import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
 	"log"
-	"main/pkg/check"
-	"main/pkg/structs"
+	"main/status/check"
+	"main/structs"
 	"net/http"
 	"sort"
 )
@@ -21,11 +21,11 @@ func GetMms(mmsChan chan [][]structs.MMSData) {
 
 	if request.StatusCode != 200 {
 		var mmsData []structs.MMSData
-		log.Println(mmsData)
+		log.Println("Ошибка статус код MMS не равен 200", mmsData)
 		mmsChan <- nil
 		return
 	} else {
-		fmt.Println("Произошла ошибка 500")
+		fmt.Println("Код ответа 200")
 	}
 
 	bytes, err := ioutil.ReadAll(request.Body)
@@ -43,7 +43,7 @@ func GetMms(mmsChan chan [][]structs.MMSData) {
 	}
 
 	for i := 0; i < len(unsortedMms); i++ {
-		if check.Country(unsortedMms[i].Country) && check.Provider(unsortedMms[i].Provider) && unsortedMms[i].ResponseTime != "" && unsortedMms[i].Bandwidth != "" {
+		if check.CountrySmsAndMms(unsortedMms[i].Country) && check.ProviderSmsAndMms(unsortedMms[i].Provider) && unsortedMms[i].ResponseTime != "" && unsortedMms[i].Bandwidth != "" {
 			unsortedMms = unsortedMms[1 : len(unsortedMms)-1]
 		}
 	}

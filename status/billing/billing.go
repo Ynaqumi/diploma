@@ -1,19 +1,19 @@
-package status
+package billing
 
 import (
 	"bufio"
 	"log"
-	"main/pkg/structs"
+	"main/config"
+	"main/structs"
 	"math"
 	"os"
 	"strconv"
 )
 
 func GetBilling(billingChan chan structs.BillingData) {
-
-	billingData, err := os.Open("C:/Users/touca/VSCode/diploma/src/simulator/billing.data")
+	billingData, err := os.Open(config.BillingDataFile)
 	if err != nil {
-		log.Println("Не удалось открыть файл", err)
+		log.Println("Не удалось открыть файл Data", err)
 		billingChan <- structs.BillingData{}
 		return
 	}

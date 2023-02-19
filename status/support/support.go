@@ -1,11 +1,11 @@
-package status
+package support
 
 import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
 	"log"
-	"main/pkg/structs"
+	"main/structs"
 	"net/http"
 )
 
@@ -19,11 +19,11 @@ func GetSupport(supportChan chan []int) {
 
 	if respAns.StatusCode != 200 {
 		var supportDataCollection []structs.SupportData
-		log.Println(supportDataCollection)
+		log.Println("Ошибка статус код Support не равен 200", supportDataCollection)
 		supportChan <- nil
 		return
 	} else {
-		fmt.Println("Произошла ошибка 500")
+		fmt.Println("Код ответа 200")
 	}
 
 	byteAns, err := ioutil.ReadAll(respAns.Body)

@@ -1,26 +1,31 @@
-package status
+package email
 
 import (
 	"bufio"
 	"log"
-	"main/pkg/check"
-	"main/pkg/structs"
+	"main/config"
+	"main/status/check"
+	"main/structs"
 	"os"
 	"sort"
 	"strconv"
 	"strings"
 )
 
-const EmailCsv = "diploma/pkg/data/email.csv"
-
 func GetEmail(emailChan chan map[string][][]structs.EmailData) {
-	emailData, err := os.Open(EmailCsv)
+	emailData, err := os.Open(config.EmailDataFile)
 	if err != nil {
-		log.Println("Не удалось открыть файл", err)
+		log.Println("Не удалось открыть файл Data", err)
 		emailChan <- nil
 		return
 	}
 	defer emailData.Close()
+
+	EmailCsvFile, err := os.Create(config.EmailCsvFile)
+	if err != nil {
+		log.Println("Не удалось создать файл Csv", err)
+	}
+	defer EmailCsvFile.Close()
 
 	var email []structs.EmailData
 
@@ -29,13 +34,10 @@ func GetEmail(emailChan chan map[string][][]structs.EmailData) {
 		line := scanner.Text()
 		lineSlice := strings.Split(line, ";")
 
-		if len(lineSlice) == 3 &&
-			lineSlice[2] != "" &&
-			check.Country(lineSlice[0]) &&
-			check.ProviderEmail(lineSlice[1]) {
-
+		if len(lineSlice) == 3 && lineSlice[2] != "" && check.CountrySmsAndMms(lineSlice[0]) && check.ProviderEmail(lineSlice[1]) {
 			deliveryTime, _ := strconv.Atoi(lineSlice[2])
-			correctLine := structs.EmailData{lineSlice[0], lineSlice[1], deliveryTime}
+			EmailCsvFile.WriteString(lineSlice[0] + ";" + lineSlice[1] + ";" + string(deliveryTime) + "\n")
+			correctLine := structs.EmailData{Country: lineSlice[0], Provider: lineSlice[1], DeliveryTime: deliveryTime}
 			email = append(email, correctLine)
 		}
 	}
