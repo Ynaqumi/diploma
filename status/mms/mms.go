@@ -43,7 +43,7 @@ func GetMms(mmsChan chan [][]structs.MMSData) {
 	}
 
 	for i := 0; i < len(unsortedMms); i++ {
-		if check.CountrySmsAndMms(unsortedMms[i].Country) && check.ProviderSmsAndMms(unsortedMms[i].Provider) && unsortedMms[i].ResponseTime != "" && unsortedMms[i].Bandwidth != "" {
+		if check.CountryCheck(unsortedMms[i].Country) && check.ProviderSmsAndMms(unsortedMms[i].Provider) && unsortedMms[i].ResponseTime != "" && unsortedMms[i].Bandwidth != "" {
 			unsortedMms = unsortedMms[1 : len(unsortedMms)-1]
 		}
 	}

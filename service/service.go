@@ -59,7 +59,6 @@ func getResultData() structs.ResultT {
 	go incidents.GetIncidents(incidentsChan)
 
 	if incidentsChan != nil {
-
 		smsData := <-smsChan
 		if len(smsData) == 0 {
 			return result

@@ -13,7 +13,7 @@ import (
 func GetBilling(billingChan chan structs.BillingData) {
 	billingData, err := os.Open(config.BillingDataFile)
 	if err != nil {
-		log.Println("Не удалось открыть файл Data", err)
+		log.Println("Не удалось открыть файл billing.data", err)
 		billingChan <- structs.BillingData{}
 		return
 	}
@@ -52,5 +52,6 @@ func GetBilling(billingChan chan structs.BillingData) {
 			CheckoutPage:   CheckoutPage,
 		}
 	}
+
 	billingChan <- field
 }

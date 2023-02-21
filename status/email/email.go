@@ -1,7 +1,7 @@
 package email
 
 import (
-	"bufio"
+	"io/ioutil"
 	"log"
 	"main/config"
 	"main/status/check"
@@ -13,34 +13,37 @@ import (
 )
 
 func GetEmail(emailChan chan map[string][][]structs.EmailData) {
-	emailData, err := os.Open(config.EmailDataFile)
+	emailDataFile, err := os.Open(config.EmailDataFile)
 	if err != nil {
-		log.Println("Не удалось открыть файл Data", err)
+		log.Println("Не удалось открыть файл email.data", err)
 		emailChan <- nil
 		return
 	}
-	defer emailData.Close()
+	defer emailDataFile.Close()
 
-	EmailCsvFile, err := os.Create(config.EmailCsvFile)
+	readEmailDataFile, err := ioutil.ReadAll(emailDataFile)
 	if err != nil {
-		log.Println("Не удалось создать файл Csv", err)
+		log.Println("Не удалось прочитать файл email.data", err)
 	}
-	defer EmailCsvFile.Close()
+
+	emailCsvFile, err := os.Create(config.EmailCsvFile)
+	if err != nil {
+		log.Println("Не удалось создать файл email.csv", err)
+	}
 
 	var email []structs.EmailData
+	line := strings.Split(string(readEmailDataFile), "\n")
 
-	scanner := bufio.NewScanner(emailData)
-	for scanner.Scan() {
-		line := scanner.Text()
-		lineSlice := strings.Split(line, ";")
-
-		if len(lineSlice) == 3 && lineSlice[2] != "" && check.CountrySmsAndMms(lineSlice[0]) && check.ProviderEmail(lineSlice[1]) {
-			deliveryTime, _ := strconv.Atoi(lineSlice[2])
-			EmailCsvFile.WriteString(lineSlice[0] + ";" + lineSlice[1] + ";" + string(deliveryTime) + "\n")
+	for i := 0; i < len(line); i++ {
+		lineSlice := strings.Split(line[i], ";")
+		deliveryTime, _ := strconv.Atoi(lineSlice[2])
+		if len(lineSlice) == 3 && check.CountryCheck(lineSlice[0]) && check.ProviderEmail(lineSlice[1]) {
+			emailCsvFile.WriteString(line[i])
 			correctLine := structs.EmailData{Country: lineSlice[0], Provider: lineSlice[1], DeliveryTime: deliveryTime}
 			email = append(email, correctLine)
 		}
 	}
+
 	countriesMap := make(map[string][]structs.EmailData)
 	countriesMap = createCountriesMap(countriesMap, email)
 	for key := range countriesMap {
@@ -54,7 +57,6 @@ func GetEmail(emailChan chan map[string][][]structs.EmailData) {
 		var S [][]structs.EmailData
 		S = append(S, fastestProviders)
 		S = append(S, slowestProviders)
-
 		newMap[key] = S
 	}
 

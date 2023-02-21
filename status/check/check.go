@@ -3,7 +3,8 @@ package check
 var ProvidersListSMSAndMMS = [3]string{"Topolo", "Rond", "Kildy"}
 var ProvidersListEmail = [13]string{"Gmail", "Yahoo", "Hotmail", "MSN", "Orange", "Comcast", "AOL", "Live", "RediffMail", "GMX", "Protonmail",
 	"Yandex", "Mail.ru"}
-var Countries = map[string]string{
+var ProvidersListVoiceCall = [3]string{"TransparentCalls", "E-Voice", "JustPhone"}
+var CountriesList = map[string]string{
 	"AF": "Afghanistan",
 	"AX": "Aland Islands",
 	"AL": "Albania",
@@ -255,27 +256,36 @@ var Countries = map[string]string{
 	"ZW": "Zimbabwe",
 }
 
-func CountrySmsAndMms(str string) bool {
-	for i := 0; i < len(Countries); i++ {
-		if str == Countries[string(i)] {
+func CountryCheck(country string) bool {
+	for i, _ := range CountriesList {
+		if country == i {
 			return true
 		}
 	}
 	return false
 }
 
-func ProviderSmsAndMms(str string) bool {
-	for i := 0; i < len(ProvidersListSMSAndMMS); i++ {
-		if str == ProvidersListSMSAndMMS[i] {
+func ProviderSmsAndMms(provider string) bool {
+	for _, ok := range ProvidersListSMSAndMMS {
+		if provider == ok {
 			return true
 		}
 	}
 	return false
 }
 
-func ProviderEmail(str string) bool {
-	for i := 0; i < len(ProvidersListEmail); i++ {
-		if str == ProvidersListEmail[i] {
+func ProviderEmail(provider string) bool {
+	for _, ok := range ProvidersListEmail {
+		if provider == ok {
+			return true
+		}
+	}
+	return false
+}
+
+func ProviderVoiceCall(provider string) bool {
+	for _, ok := range ProvidersListVoiceCall {
+		if provider == ok {
 			return true
 		}
 	}
