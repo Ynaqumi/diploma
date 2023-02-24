@@ -35,12 +35,27 @@ func GetVoice(voiceCallChan chan []structs.VoiceCallData) {
 
 	for i := 0; i < len(line); i++ {
 		lineSlice := strings.Split(line[i], ";")
-		bandwidth, _ := strconv.Atoi(lineSlice[1])
-		Stability64, _ := strconv.ParseFloat(lineSlice[4], 32)
+		bandwidth, err := strconv.Atoi(lineSlice[1])
+		if err != nil {
+			continue
+		}
+		Stability64, err := strconv.ParseFloat(lineSlice[4], 32)
+		if err != nil {
+			continue
+		}
 		Stability32 := float32(Stability64)
-		TTFB, _ := strconv.Atoi(lineSlice[5])
-		VoicePurity, _ := strconv.Atoi(lineSlice[6])
-		MedianOfCallsTime, _ := strconv.Atoi(lineSlice[7])
+		TTFB, err := strconv.Atoi(lineSlice[5])
+		if err != nil {
+			continue
+		}
+		VoicePurity, err := strconv.Atoi(lineSlice[6])
+		if err != nil {
+			continue
+		}
+		MedianOfCallsTime, err := strconv.Atoi(lineSlice[7])
+		if err != nil {
+			continue
+		}
 
 		if len(lineSlice) == 8 && check.CountryCheck(lineSlice[0]) && check.ProviderVoiceCall(lineSlice[3]) && (bandwidth >= 0 && bandwidth <= 100) && Stability32 != 0 && TTFB != 0 && VoicePurity != 0 && MedianOfCallsTime != 0 {
 			voiceCsvFile.WriteString(line[i])

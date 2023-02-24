@@ -26,7 +26,10 @@ func GetBilling(billingChan chan structs.BillingData) {
 
 		var newSlice []int
 		for i := len(line); i > 0; i-- {
-			circleInt, _ := strconv.Atoi(line[i-1:])
+			circleInt, err := strconv.Atoi(line[i-1:])
+			if err != nil {
+				continue
+			}
 			newSlice = append(newSlice, circleInt)
 			line = line[:i-1]
 		}

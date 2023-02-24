@@ -37,7 +37,10 @@ func GetSms(smsChan chan [][]structs.SMSData) {
 
 	for i := 0; i < len(line); i++ {
 		lineSlice := strings.Split(line[i], ";")
-		bandwidth, _ := strconv.Atoi(lineSlice[1])
+		bandwidth, err := strconv.Atoi(lineSlice[1])
+		if err != nil {
+			continue
+		}
 		if len(lineSlice) == 4 && check.CountryCheck(lineSlice[0]) && check.ProviderSmsAndMms(lineSlice[3]) && (bandwidth >= 0 && bandwidth <= 100) {
 			smsCsvFile.WriteString(line[i])
 			correctLine := structs.SMSData{Country: lineSlice[0], Bandwidth: lineSlice[1], ResponseTime: lineSlice[1], Provider: lineSlice[3]}

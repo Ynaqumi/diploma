@@ -36,7 +36,10 @@ func GetEmail(emailChan chan map[string][][]structs.EmailData) {
 
 	for i := 0; i < len(line); i++ {
 		lineSlice := strings.Split(line[i], ";")
-		deliveryTime, _ := strconv.Atoi(lineSlice[2])
+		deliveryTime, err := strconv.Atoi(lineSlice[2])
+		if err != nil {
+			continue
+		}
 		if len(lineSlice) == 3 && check.CountryCheck(lineSlice[0]) && check.ProviderEmail(lineSlice[1]) {
 			emailCsvFile.WriteString(line[i])
 			correctLine := structs.EmailData{Country: lineSlice[0], Provider: lineSlice[1], DeliveryTime: deliveryTime}
