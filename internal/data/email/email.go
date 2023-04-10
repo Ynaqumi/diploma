@@ -2,19 +2,14 @@ package email
 
 import (
 	"diploma/internal/check"
+	"diploma/internal/data/structs"
 	"log"
 	"os"
 	"strconv"
 	"strings"
 )
 
-type EmailData struct {
-	Country      string `json:"country"`
-	Provider     string `json:"provider"`
-	DeliveryTime int    `json:"delivery_time"`
-}
-
-func Email() (email []EmailData) {
+func Email() (email []structs.EmailData) {
 	dataFileContent, err := os.ReadFile("simulator/email.data")
 	if err != nil {
 		log.Printf("Не удалось прочитать файл email.data. Ошибка: %v", err)
@@ -27,7 +22,7 @@ func Email() (email []EmailData) {
 			if err != nil || !check.CountryCheck(lineStr[0]) || !check.ProviderEmail(lineStr[1]) {
 				continue
 			}
-			email = append(email, EmailData{Country: lineStr[0] + ";", Provider: lineStr[1] + ";", DeliveryTime: deliveryTime})
+			email = append(email, structs.EmailData{Country: lineStr[0] + ";", Provider: lineStr[1] + ";", DeliveryTime: deliveryTime})
 		}
 	}
 	return

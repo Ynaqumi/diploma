@@ -2,6 +2,7 @@ package mms
 
 import (
 	"diploma/internal/check"
+	"diploma/internal/data/structs"
 	"encoding/json"
 	"fmt"
 	"io"
@@ -9,14 +10,7 @@ import (
 	"net/http"
 )
 
-type MMSData struct {
-	Country      string `json:"country"`
-	Provider     string `json:"provider"`
-	Bandwidth    string `json:"bandwidth"`
-	ResponseTime string `json:"response_time"`
-}
-
-func Mms() (mms []MMSData) {
+func Mms() (mms []structs.MMSData) {
 	request, err := http.Get("http://127.0.0.1:8383/mms")
 	if err != nil {
 		log.Printf("Не удалось выполнить GET запрос по MMS. Код ответа %v. Ошибка %v \n", request.StatusCode, err)
@@ -24,7 +18,7 @@ func Mms() (mms []MMSData) {
 		fmt.Printf("GET запрос по MMS выполнен. Код ответа %v \n", request.StatusCode)
 	}
 
-	mmsData := []MMSData{}
+	mmsData := []structs.MMSData{}
 
 	body, err := io.ReadAll(request.Body)
 	if err != nil {
@@ -37,7 +31,7 @@ func Mms() (mms []MMSData) {
 
 	for _, elem := range mmsData {
 		if check.CountryCheck(elem.Country) && check.ProviderSmsAndMMSCheck(elem.Provider) {
-			mms = append(mms, MMSData{Country: elem.Country + ";", Provider: elem.Provider + ";", Bandwidth: elem.Bandwidth + ";", ResponseTime: elem.ResponseTime})
+			mms = append(mms, structs.MMSData{Country: elem.Country + ";", Provider: elem.Provider + ";", Bandwidth: elem.Bandwidth + ";", ResponseTime: elem.ResponseTime})
 		}
 	}
 	return

@@ -1,6 +1,7 @@
 package support
 
 import (
+	"diploma/internal/data/structs"
 	"encoding/json"
 	"fmt"
 	"io"
@@ -8,12 +9,7 @@ import (
 	"net/http"
 )
 
-type SupportData struct {
-	Topic         string `json:"topic"`
-	ActiveTickets int    `json:"active_tickets"`
-}
-
-func Support() (support []SupportData) {
+func Support() (support []structs.SupportData) {
 	request, err := http.Get("http://127.0.0.1:8383/support")
 	if err != nil {
 		log.Printf("Не удалось выполнить GET запрос по MMS. Код ответа %v. Ошибка %v \n", request.StatusCode, err)

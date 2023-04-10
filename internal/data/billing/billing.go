@@ -1,6 +1,7 @@
 package billing
 
 import (
+	"diploma/internal/data/structs"
 	"fmt"
 	"log"
 	"math"
@@ -8,18 +9,9 @@ import (
 	"strings"
 )
 
-type BillingData struct {
-	CreateCustomer bool
-	Purchase       bool
-	Payout         bool
-	Recurring      bool
-	FraudControl   bool
-	CheckoutPage   bool
-}
-
 var numder uint8
 
-func Billing() (billing []BillingData) {
+func Billing() (billing []structs.BillingData) {
 	data, err := os.ReadFile("simulator/billing.data")
 	if err != nil {
 		log.Printf("Не удалось прочитать файл billing.data. Ошибка: %v", err)
@@ -39,6 +31,6 @@ func Billing() (billing []BillingData) {
 			numder += uint8(math.Pow(2, float64(i)))
 		}
 	}
-	billing = append(billing, BillingData{CreateCustomer: elem[0], Purchase: elem[1], Payout: elem[2], Recurring: elem[3], FraudControl: elem[4], CheckoutPage: elem[5]})
+	billing = append(billing, structs.BillingData{CreateCustomer: elem[0], Purchase: elem[1], Payout: elem[2], Recurring: elem[3], FraudControl: elem[4], CheckoutPage: elem[5]})
 	return
 }

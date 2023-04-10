@@ -2,24 +2,14 @@ package voice
 
 import (
 	"diploma/internal/check"
+	"diploma/internal/data/structs"
 	"log"
 	"os"
 	"strconv"
 	"strings"
 )
 
-type VoiceCallData struct {
-	Country             string  `json:"country"`
-	Bandwidth           string  `json:"bandwidth"`
-	ResponseTime        string  `json:"response_time"`
-	Provider            string  `json:"provider"`
-	ConnectionStability float32 `json:"connection_stability"`
-	TTFB                int     `json:"ttfb"`
-	VoicePurity         int     `json:"voice_purity"`
-	MedianOfCallsTime   int     `json:"median_of_calls_time"`
-}
-
-func VoiceCall() (voiceCall []VoiceCallData) {
+func VoiceCall() (voiceCall []structs.VoiceCallData) {
 	data, err := os.ReadFile("simulator/voice.data")
 	if err != nil {
 		log.Printf("Не удалось прочитать файл voice.data. Ошибка: %v", err)
@@ -33,7 +23,7 @@ func VoiceCall() (voiceCall []VoiceCallData) {
 			TTFB, _ := strconv.Atoi(lineStr[5])
 			voicePurity, _ := strconv.Atoi(lineStr[6])
 			medianOfCallsTime, _ := strconv.Atoi(lineStr[7])
-			voiceCall = append(voiceCall, VoiceCallData{Country: lineStr[0], Bandwidth: lineStr[1], ResponseTime: lineStr[2], Provider: lineStr[3], ConnectionStability: stability32, TTFB: TTFB, VoicePurity: voicePurity, MedianOfCallsTime: medianOfCallsTime})
+			voiceCall = append(voiceCall, structs.VoiceCallData{Country: lineStr[0], Bandwidth: lineStr[1], ResponseTime: lineStr[2], Provider: lineStr[3], ConnectionStability: stability32, TTFB: TTFB, VoicePurity: voicePurity, MedianOfCallsTime: medianOfCallsTime})
 		}
 	}
 	return
