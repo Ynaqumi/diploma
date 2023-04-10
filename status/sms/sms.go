@@ -14,13 +14,12 @@ type SMSData struct {
 	Provider     string
 }
 
-func Sms() {
+func Sms() (sms []SMSData) {
 	data, err := os.ReadFile("simulator/sms.data")
 	if err != nil {
 		fmt.Println(err)
 	}
 
-	sms := []SMSData{}
 	for _, line := range strings.Split(string(data), "\n") {
 		if strings.Count(line, ";") == 3 {
 			lineStr := strings.Split(line, ";")
@@ -29,6 +28,5 @@ func Sms() {
 			}
 		}
 	}
-
-	fmt.Println(sms)
+	return
 }

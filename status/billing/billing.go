@@ -19,8 +19,7 @@ type BillingData struct {
 
 var numder uint8
 
-func Billing() {
-	billing := []BillingData{}
+func Billing() (billing []BillingData) {
 	data, err := os.ReadFile("simulator/billing.data")
 	if err != nil {
 		log.Println("Не удалось прочитать billing.data файл", err)
@@ -41,6 +40,5 @@ func Billing() {
 		}
 	}
 	billing = append(billing, BillingData{CreateCustomer: elem[0], Purchase: elem[1], Payout: elem[2], Recurring: elem[3], FraudControl: elem[4], CheckoutPage: elem[5]})
-
-	fmt.Println(billing)
+	return
 }

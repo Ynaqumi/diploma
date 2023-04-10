@@ -8,14 +8,15 @@ import (
 	"diploma2/status/sms"
 	"diploma2/status/support"
 	"diploma2/status/voice"
+	"fmt"
 )
 
 func main() {
-	sms.Sms()
-	mms.Mms()
-	voice.VoiceCall()
-	email.Email()
-	billing.Billing()
-	support.Support()
-	incidents.Incidents()
+	fmt.Println(sms.Sms(), "\n",
+		mms.Mms(), "\n",
+		voice.VoiceCall(), "\n",
+		email.Email(), "\n",
+		billing.Billing(), "\n",
+		support.Support(), "\n",
+		incidents.Incidents())
 }

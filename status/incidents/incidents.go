@@ -13,7 +13,7 @@ type IncidentData struct {
 	Status string `json:"status"`
 }
 
-func Incidents() {
+func Incidents() (incidents []IncidentData) {
 	request, err := http.Get("http://127.0.0.1:8383/accendent")
 	if err != nil {
 		log.Printf("Не удалось выполнить GET запрос по MMS. Код ответа %v. Ошибка %v \n", request.StatusCode, err)
@@ -26,10 +26,8 @@ func Incidents() {
 		log.Println("Не удалось прочитать Get-запрос", err)
 	}
 
-	var incidents []IncidentData
 	if err := json.Unmarshal(body, &incidents); err != nil {
 		log.Println("Ошибка unmarshal", err)
 	}
-
-	fmt.Println(incidents)
+	return
 }

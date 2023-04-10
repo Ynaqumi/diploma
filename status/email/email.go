@@ -2,7 +2,6 @@ package email
 
 import (
 	"diploma2/status/check"
-	"fmt"
 	"log"
 	"os"
 	"strconv"
@@ -15,13 +14,12 @@ type EmailData struct {
 	DeliveryTime int    `json:"delivery_time"`
 }
 
-func Email() {
+func Email() (email []EmailData) {
 	dataFileContent, err := os.ReadFile("simulator/email.data")
 	if err != nil {
 		log.Println("Не удалось прочитать email.data файл", err)
 	}
 
-	email := []EmailData{}
 	for _, line := range strings.Split(string(dataFileContent), "\n") {
 		if strings.Count(line, ";") == 2 {
 			lineStr := strings.Split(line, ";")
@@ -32,6 +30,5 @@ func Email() {
 			email = append(email, EmailData{Country: lineStr[0] + ";", Provider: lineStr[1] + ";", DeliveryTime: deliveryTime})
 		}
 	}
-
-	fmt.Println(email)
+	return
 }

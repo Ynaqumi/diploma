@@ -13,7 +13,7 @@ type SupportData struct {
 	ActiveTickets int    `json:"active_tickets"`
 }
 
-func Support() {
+func Support() (support []SupportData) {
 	request, err := http.Get("http://127.0.0.1:8383/support")
 	if err != nil {
 		log.Printf("Не удалось выполнить GET запрос по MMS. Код ответа %v. Ошибка %v \n", request.StatusCode, err)
@@ -26,10 +26,8 @@ func Support() {
 		log.Println("Не удалось прочитать get-запрос", err)
 	}
 
-	support := []SupportData{}
 	if err := json.Unmarshal(body, &support); err != nil {
 		log.Println("Ошибка unmarshal", err)
 	}
-
-	fmt.Println(support)
+	return
 }
