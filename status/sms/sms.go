@@ -2,7 +2,7 @@ package sms
 
 import (
 	"diploma2/status/check"
-	"fmt"
+	"log"
 	"os"
 	"strings"
 )
@@ -17,7 +17,7 @@ type SMSData struct {
 func Sms() (sms []SMSData) {
 	data, err := os.ReadFile("simulator/sms.data")
 	if err != nil {
-		fmt.Println(err)
+		log.Printf("Не удалось прочитать файл sms.data. Ошибка: %v", err)
 	}
 
 	for _, line := range strings.Split(string(data), "\n") {

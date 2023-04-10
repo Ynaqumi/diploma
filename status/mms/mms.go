@@ -28,11 +28,11 @@ func Mms() (mms []MMSData) {
 
 	body, err := io.ReadAll(request.Body)
 	if err != nil {
-		log.Println("Не удалось прочитать Get-запрос", err)
+		log.Printf("Не удалось прочитать Get-запрос. Ошибка: %v", err)
 	}
 
 	if err := json.Unmarshal(body, &mmsData); err != nil {
-		log.Println("Ошибка unmarshal", err)
+		log.Printf("Ошибка unmarshal %v", err)
 	}
 
 	for _, elem := range mmsData {

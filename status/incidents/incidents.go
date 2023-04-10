@@ -23,11 +23,11 @@ func Incidents() (incidents []IncidentData) {
 
 	body, err := io.ReadAll(request.Body)
 	if err != nil {
-		log.Println("Не удалось прочитать Get-запрос", err)
+		log.Printf("Не удалось прочитать Get-запрос. Ошибка: %v", err)
 	}
 
 	if err := json.Unmarshal(body, &incidents); err != nil {
-		log.Println("Ошибка unmarshal", err)
+		log.Printf("Ошибка unmarshal %v", err)
 	}
 	return
 }

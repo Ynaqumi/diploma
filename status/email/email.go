@@ -17,7 +17,7 @@ type EmailData struct {
 func Email() (email []EmailData) {
 	dataFileContent, err := os.ReadFile("simulator/email.data")
 	if err != nil {
-		log.Println("Не удалось прочитать email.data файл", err)
+		log.Printf("Не удалось прочитать файл email.data. Ошибка: %v", err)
 	}
 
 	for _, line := range strings.Split(string(dataFileContent), "\n") {

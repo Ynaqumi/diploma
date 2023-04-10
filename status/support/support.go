@@ -23,11 +23,11 @@ func Support() (support []SupportData) {
 
 	body, err := io.ReadAll(request.Body)
 	if err != nil {
-		log.Println("Не удалось прочитать get-запрос", err)
+		log.Printf("Не удалось прочитать get-запрос. Ошибка: %v", err)
 	}
 
 	if err := json.Unmarshal(body, &support); err != nil {
-		log.Println("Ошибка unmarshal", err)
+		log.Printf("Ошибка unmarshal %v", err)
 	}
 	return
 }

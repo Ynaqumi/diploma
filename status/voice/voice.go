@@ -22,7 +22,7 @@ type VoiceCallData struct {
 func VoiceCall() (voiceCall []VoiceCallData) {
 	data, err := os.ReadFile("simulator/voice.data")
 	if err != nil {
-		log.Println("Не удалось прочитать файл voice.data", err)
+		log.Printf("Не удалось прочитать файл voice.data. Ошибка: %v", err)
 	}
 
 	for _, line := range strings.Split(string(data), "\n") {

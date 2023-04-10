@@ -22,7 +22,7 @@ var numder uint8
 func Billing() (billing []BillingData) {
 	data, err := os.ReadFile("simulator/billing.data")
 	if err != nil {
-		log.Println("Не удалось прочитать billing.data файл", err)
+		log.Printf("Не удалось прочитать файл billing.data. Ошибка: %v", err)
 	}
 
 	line := strings.Split(string(data), "")
