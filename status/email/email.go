@@ -1,7 +1,7 @@
 package email
 
 import (
-	"diploma2/status/check"
+	"diploma/status/check"
 	"log"
 	"os"
 	"strconv"

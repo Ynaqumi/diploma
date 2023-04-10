@@ -1,4 +1,4 @@
-module diploma2
+module diploma
 
 go 1.20
 

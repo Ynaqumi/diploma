@@ -1,13 +1,13 @@
 package main
 
 import (
-	"diploma2/status/billing"
-	"diploma2/status/email"
-	"diploma2/status/incidents"
-	"diploma2/status/mms"
-	"diploma2/status/sms"
-	"diploma2/status/support"
-	"diploma2/status/voice"
+	"diploma/status/billing"
+	"diploma/status/email"
+	"diploma/status/incidents"
+	"diploma/status/mms"
+	"diploma/status/sms"
+	"diploma/status/support"
+	"diploma/status/voice"
 	"fmt"
 )
 
