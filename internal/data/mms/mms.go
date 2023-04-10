@@ -1,7 +1,7 @@
 package mms
 
 import (
-	"diploma/status/check"
+	"diploma/internal/check"
 	"encoding/json"
 	"fmt"
 	"io"

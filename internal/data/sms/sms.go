@@ -1,7 +1,7 @@
 package sms
 
 import (
-	"diploma/status/check"
+	"diploma/internal/check"
 	"log"
 	"os"
 	"strings"

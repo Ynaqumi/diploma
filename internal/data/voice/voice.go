@@ -1,7 +1,7 @@
 package voice
 
 import (
-	"diploma/status/check"
+	"diploma/internal/check"
 	"log"
 	"os"
 	"strconv"

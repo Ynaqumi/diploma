@@ -175,7 +175,7 @@
     let handleResponse = async function(response){
         let json = await response.json();
         if(!checkJsonScheme(json)) {
-            showErrors(['JSON bad format: no status, data or error keys']);
+            showErrors(['JSON bad format: no data, data or error keys']);
             return;
         }
 

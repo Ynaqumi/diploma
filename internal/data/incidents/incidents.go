@@ -10,7 +10,7 @@ import (
 
 type IncidentData struct {
 	Topic  string `json:"topic"`
-	Status string `json:"status"`
+	Status string `json:"data"`
 }
 
 func Incidents() (incidents []IncidentData) {
