@@ -1,12 +1,12 @@
 package structs
 
 type BillingData struct {
-	CreateCustomer bool
-	Purchase       bool
-	Payout         bool
-	Recurring      bool
-	FraudControl   bool
-	CheckoutPage   bool
+	CreateCustomer bool `json:"create_customer"`
+	Purchase       bool `json:"purchase"`
+	Payout         bool `json:"payout"`
+	Recurring      bool `json:"recurring"`
+	FraudControl   bool `json:"fraud_control"`
+	CheckoutPage   bool `json:"checkout_page"`
 }
 
 type EmailData struct {
@@ -28,10 +28,10 @@ type MMSData struct {
 }
 
 type SMSData struct {
-	Сountry      string
-	Bandwidth    string
-	ResponseTime string
-	Provider     string
+	Сountry      string `json:"country"`
+	Bandwidth    string `json:"bandwidth"`
+	ResponseTime string `json:"response_time"`
+	Provider     string `json:"provider"`
 }
 
 type SupportData struct {
@@ -48,4 +48,20 @@ type VoiceCallData struct {
 	TTFB                int     `json:"ttfb"`
 	VoicePurity         int     `json:"voice_purity"`
 	MedianOfCallsTime   int     `json:"median_of_calls_time"`
+}
+
+type ResultSetT struct {
+	SMS       [][]SMSData              `json:"sms"`
+	MMS       [][]MMSData              `json:"mms"`
+	VoiceCall []VoiceCallData          `json:"voice_call"`
+	Email     map[string][][]EmailData `json:"email"`
+	Billing   BillingData              `json:"billing"`
+	Support   []int                    `json:"support"`
+	Incidents []IncidentData           `json:"incident"`
+}
+
+type ResultT struct {
+	Status bool       `json:"status"`
+	Data   ResultSetT `json:"data"`
+	Error  string     `json:"error"`
 }

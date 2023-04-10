@@ -2,7 +2,7 @@ package voice
 
 import (
 	"diploma/internal/check"
-	"diploma/internal/data/structs"
+	"diploma/internal/structs"
 	"log"
 	"os"
 	"strconv"

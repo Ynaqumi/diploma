@@ -1,7 +1,7 @@
 package incidents
 
 import (
-	"diploma/internal/data/structs"
+	"diploma/internal/structs"
 	"encoding/json"
 	"fmt"
 	"io"

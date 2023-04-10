@@ -2,7 +2,7 @@ package mms
 
 import (
 	"diploma/internal/check"
-	"diploma/internal/data/structs"
+	"diploma/internal/structs"
 	"encoding/json"
 	"fmt"
 	"io"

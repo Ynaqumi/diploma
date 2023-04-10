@@ -1,7 +1,7 @@
 package billing
 
 import (
-	"diploma/internal/data/structs"
+	"diploma/internal/structs"
 	"fmt"
 	"log"
 	"math"
