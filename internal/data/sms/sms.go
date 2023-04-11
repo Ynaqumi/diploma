@@ -12,7 +12,7 @@ import (
 func Sms() ([][]structs.SMSData, string) {
 	data, err := os.ReadFile("simulator/sms.data")
 	if err != nil {
-		log.Printf("Не удалость прочитать файл sms.data. Ошибка: %v", err)
+		log.Printf("Не удалось прочитать файл sms.data. Ошибка: %v", err)
 		return nil, support_functoins.ErrorToString(err)
 	}
 

@@ -10,6 +10,7 @@ import (
 	"diploma/internal/data/voice"
 	"diploma/internal/structs"
 	"encoding/json"
+	"log"
 	"net/http"
 )
 
@@ -18,9 +19,19 @@ import (
 )
 
 func Server() {
+	server := &http.Server{
+		Addr: "localhost:8282",
+	}
+
 	router := mux.NewRouter()
-	router.HandleFunc("/", handleConnection).Methods("GET", "OPTIONS")
-	http.ListenAndServe("localhost:8282", router)
+
+	router.HandleFunc("/", handleConnection)
+	server.Handler = router
+
+	err := server.ListenAndServe()
+	if err != nil {
+		log.Printf("Error starting server: %v\n", err)
+	}
 }
 
 func handleConnection(rw http.ResponseWriter, r *http.Request) {
