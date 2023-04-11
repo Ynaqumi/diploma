@@ -18,20 +18,16 @@ import (
 	"github.com/gorilla/mux"
 )
 
-func Server() {
+func Start() {
 	server := &http.Server{
 		Addr: "localhost:8282",
 	}
 
 	router := mux.NewRouter()
-
-	router.HandleFunc("/", handleConnection)
+	router.HandleFunc("/api", handleConnection)
 	server.Handler = router
 
-	err := server.ListenAndServe()
-	if err != nil {
-		log.Printf("Error starting server: %v\n", err)
-	}
+	log.Fatal(server.ListenAndServe())
 }
 
 func handleConnection(rw http.ResponseWriter, r *http.Request) {
@@ -43,22 +39,20 @@ func handleConnection(rw http.ResponseWriter, r *http.Request) {
 	resultT := getResultT()
 	byteResultT, err := json.Marshal(resultT)
 	if err != nil {
-		rw.WriteHeader(http.StatusInternalServerError)
-		rw.Write([]byte(err.Error()))
+		http.Error(rw, err.Error(), http.StatusInternalServerError)
 		return
 	}
 	rw.Write(byteResultT)
 }
 
-func getResultT() (resultT []structs.ResultT) {
-	resultSet := getResultData()
-	resultT = append(resultT, structs.ResultT{Status: true, Data: resultSet})
+func getResultT() (resultT structs.ResultT) {
+	result := []structs.ResultT{}
+	resultSet := getResultData(result)
+	resultT = structs.ResultT{Status: true, Data: resultSet}
 	return
 }
 
-func getResultData() (resultSet structs.ResultSetT) {
-	resultT := []structs.ResultT{}
-
+func getResultData(resultT []structs.ResultT) (resultSet structs.ResultSetT) {
 	sms, errSms := sms.Sms()
 	if errSms != "" {
 		resultT = append(resultT, structs.ResultT{Status: false, Data: structs.ResultSetT{}, Error: errSms})

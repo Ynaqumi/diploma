@@ -5,26 +5,22 @@ import (
 	"diploma/internal/support_functoins"
 	"encoding/json"
 	"io"
-	"log"
 	"net/http"
 )
 
 func Support() (support []int, error string) {
 	request, err := http.Get("http://127.0.0.1:8383/support")
 	if err != nil {
-		log.Printf("Не удалось выполнить GET-запрос по Support. Код ответа %v. Ошибка %v \n", request.StatusCode, err)
 		return support, support_functoins.ErrorToString(err)
 	}
 
 	body, err := io.ReadAll(request.Body)
 	if err != nil {
-		log.Printf("Не удалось прочитать GET-запрос по Support. Ошибка: %v", err)
 		return support, support_functoins.ErrorToString(err)
 	}
 
 	supportData := []structs.SupportData{}
 	if err := json.Unmarshal(body, &supportData); err != nil {
-		log.Printf("Ошибка unmarshal по Support: %v", err)
 		return support, support_functoins.ErrorToString(err)
 	}
 

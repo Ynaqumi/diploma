@@ -5,7 +5,6 @@ import (
 	"diploma/internal/support_functoins"
 	"encoding/json"
 	"io"
-	"log"
 	"net/http"
 	"sort"
 )
@@ -13,7 +12,6 @@ import (
 func Mms() ([][]structs.MMSData, string) {
 	request, err := http.Get("http://127.0.0.1:8383/mms")
 	if err != nil {
-		log.Printf("Не удалось выполнить GET-запрос по MMS. Код ответа %v. Ошибка %v \n", request.StatusCode, err)
 		return nil, support_functoins.ErrorToString(err)
 	}
 
@@ -21,18 +19,16 @@ func Mms() ([][]structs.MMSData, string) {
 	unsortedMms := []structs.MMSData{}
 	body, err := io.ReadAll(request.Body)
 	if err != nil {
-		log.Printf("Не удалось прочитать GET-запрос по MMS. Ошибка: %v", err)
 		return nil, support_functoins.ErrorToString(err)
 	}
 
 	if err := json.Unmarshal(body, &mmsData); err != nil {
-		log.Printf("Ошибка unmarshal по MMS: %v", err)
 		return nil, support_functoins.ErrorToString(err)
 	}
 
 	for _, elem := range mmsData {
 		if support_functoins.CountryCheck(elem.Country) && support_functoins.ProviderSmsAndMMSCheck(elem.Provider) {
-			unsortedMms = append(unsortedMms, structs.MMSData{Country: elem.Country + ";", Provider: elem.Provider + ";", Bandwidth: elem.Bandwidth + ";", ResponseTime: elem.ResponseTime})
+			unsortedMms = append(unsortedMms, structs.MMSData{Country: elem.Country, Provider: elem.Provider, Bandwidth: elem.Bandwidth, ResponseTime: elem.ResponseTime})
 		}
 	}
 

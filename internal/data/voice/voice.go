@@ -3,7 +3,6 @@ package voice
 import (
 	"diploma/internal/structs"
 	"diploma/internal/support_functoins"
-	"log"
 	"os"
 	"strconv"
 	"strings"
@@ -12,7 +11,6 @@ import (
 func VoiceCall() (voiceCall []structs.VoiceCallData, error string) {
 	data, err := os.ReadFile("simulator/voice.data")
 	if err != nil {
-		log.Printf("Не удалось прочитать файл voice.data. Ошибка: %v", err)
 		return voiceCall, support_functoins.ErrorToString(err)
 	}
 

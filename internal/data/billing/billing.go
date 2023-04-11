@@ -3,7 +3,6 @@ package billing
 import (
 	"diploma/internal/structs"
 	"diploma/internal/support_functoins"
-	"log"
 	"math"
 	"os"
 	"strings"
@@ -14,7 +13,6 @@ var numder uint8
 func Billing() (billing structs.BillingData, error string) {
 	data, err := os.ReadFile("simulator/billing.data")
 	if err != nil {
-		log.Printf("Не удалось прочитать файл billing.data. Ошибка: %v", err)
 		return billing, support_functoins.ErrorToString(err)
 	}
 
