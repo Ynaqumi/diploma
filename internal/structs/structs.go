@@ -17,7 +17,7 @@ type EmailData struct {
 
 type IncidentData struct {
 	Topic  string `json:"topic"`
-	Status string `json:"data"`
+	Status string `json:"status"`
 }
 
 type MMSData struct {

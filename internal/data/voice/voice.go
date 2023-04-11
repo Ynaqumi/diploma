@@ -1,23 +1,24 @@
 package voice
 
 import (
-	"diploma/internal/check"
 	"diploma/internal/structs"
+	"diploma/internal/support_functoins"
 	"log"
 	"os"
 	"strconv"
 	"strings"
 )
 
-func VoiceCall() (voiceCall []structs.VoiceCallData) {
+func VoiceCall() (voiceCall []structs.VoiceCallData, error string) {
 	data, err := os.ReadFile("simulator/voice.data")
 	if err != nil {
 		log.Printf("Не удалось прочитать файл voice.data. Ошибка: %v", err)
+		return voiceCall, support_functoins.ErrorToString(err)
 	}
 
 	for _, line := range strings.Split(string(data), "\n") {
 		lineStr := strings.Split(line, ";")
-		if strings.Count(line, ";") == 7 && len(lineStr) == 8 && check.CountryCheck(lineStr[0]) && check.ProviderVoiceCheck(lineStr[3]) && check.BandwidthCheck(lineStr[1]) {
+		if strings.Count(line, ";") == 7 && len(lineStr) == 8 && support_functoins.CountryCheck(lineStr[0]) && support_functoins.ProviderVoiceCheck(lineStr[3]) && support_functoins.BandwidthCheck(lineStr[1]) {
 			stability64, _ := strconv.ParseFloat(lineStr[4], 32)
 			stability32 := float32(stability64)
 			TTFB, _ := strconv.Atoi(lineStr[5])
@@ -26,5 +27,5 @@ func VoiceCall() (voiceCall []structs.VoiceCallData) {
 			voiceCall = append(voiceCall, structs.VoiceCallData{Country: lineStr[0], Bandwidth: lineStr[1], ResponseTime: lineStr[2], Provider: lineStr[3], ConnectionStability: stability32, TTFB: TTFB, VoicePurity: voicePurity, MedianOfCallsTime: medianOfCallsTime})
 		}
 	}
-	return
+	return voiceCall, support_functoins.ErrorToString(err)
 }

@@ -1,4 +1,4 @@
-package check
+package support_functoins
 
 import "strconv"
 
